@@ -18,7 +18,7 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 			saveArray();
 		}
 		ObjectInputStream in = new ObjectInputStream(new FileInputStream("sport.points"));
-		ArrayList sPT = in.readObject();
+		ArrayList sPT = (ArrayList)in.readObject();
 		for (int i = 0; i < sPT.size(); i++){
 			sportPoints.add(sPT.get(i));
 		}
@@ -182,28 +182,28 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
     	return;
     }
 	private void addSportPoint(String sportsballPlayer) throws IOException{
-		for (int i = 0; i < sportPoints.size; i++){
-			if (SportPoints.hash(sportPoints.get(i), sportsballPlayer) == true){
-				sportPoints.set(i, SportPoints(sportsballplayer, sportPoints.get(i).sportPoint + 1));
+		SportPoints sP = new SportPoints();
+		for (int i = 0; i < sportPoints.size(); i++){
+			if (hashName(sportsballPlayer) == sp.hash(sportPoints.get(i))){
+				sportPoints.set(i, SportPoints(sportsballplayer, sP.getPoints(sportPoints.get(i), sportsballplayer) + 1));
 			}
 		}
 		return;
 	}
 	private void minusSportPoint(String sportsballPlayer) throws IOException{
+		SportPoints sP = new SportPoints();
 		for (int i = 0; i < sportPoints.size(); i++){
-			if (SportPoints.hash(sportPoints.get(i), sportsballPlayer) == true){
-				sportPoints.set(i, SportPoints(sportsballplayer, sportPoints.get(i).sportPoint - 1));
+			if (sP.hash(sportPoints.get(i), sportsballPlayer) == true){
+				sportPoints.set(i, SportPoints(sportsballplayer, sP.getPoints(sportPoints.get(i), sportsballplayer) - 1));
 			}
 		}
 		return;
 	}
 	private int countSportPoints(String sportsballPlayer){
-		for (int i = 0; i < sportPoints.size(); i++)
-		//int hashedName = hashName(sportsballPlayer);
-		for (int i = 0; i < 100; i++){
-			SportPoints.getNick(sportPoints.get(i), sportsballPlayer);
-			if (sportPoints[i][0] == hashedName(sportsballplayer)){
-				return sportPoints[i][1];
+		SportPoints sP = new SportPoints();
+		for (int i = 0; i < sportPoints.size(); i++){
+			if (sP.getNick(sportPoints.get(i), sportsballPlayer) == true){
+				return sP.getPoints(sportPoints.get(i), sportsballplayer);
 			}
 		}
 		return 0;
@@ -340,7 +340,7 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
     	ObjectOutputStream out = null;
     	try {
 			out = new ObjectOutputStream(
-					new FileOutputStream("factoids.robot")//factoids.triangle
+					new FileOutputStream("factoids")//factoids.triangle
 					);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

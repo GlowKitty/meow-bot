@@ -20,7 +20,7 @@ public class MeowBotMain {
 
 		String channel2 = "#bmhsprogramming";//2 bots in one? MADNESS! LETS GO FOR 3!
 		String network2 = "chat.freenode.net";
-		MeowBotC botC = new MeowBotC();
+		MeowBotC bot2 = new MeowBotC();
 		bot2.setVerbose(true);
 		bot2.connect(network2);
 		bot2.joinChannel(channel2);

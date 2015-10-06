@@ -1,4 +1,3 @@
-package TweeseeBot;
 import org.jibble.pircbot.*;
 import org.apache.commons.digester.rss.Channel;
 import org.apache.commons.digester.rss.Item;
@@ -87,12 +86,21 @@ public class LapFoxBot extends PircBot {
     }
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
     	char checkCommand = message.charAt(0);
-    	/*if (channel != "#lapfoxtrax" && sender == "GlowKitty" && message == "login sw113231") {
-    		LapFoxBotMain._loggedIn = true;
-    	}*/
+        String command = message.substring(1);
     	if(checkCommand == '!') {
-    		Commands cmd = new Commands();
-    		cmd.commandRecieved(channel, sender, message);
+    		String[] cmdSplit = command.split(" ");
+            if(command.equalsIgnoreCase("test")){
+                sendMessage(channel, sender + ": Test succeeded.");
+            }
+            else if(command.equalsIgnoreCase("help")){
+                sendMessage(channel, sender + ": test, ping, version, one sport point <athlete>, minus one sport point <athlete>, score <athlete>, learn <thing> as <otherthing>,");
+            }
+            else if (command.equalsIgnoreCase("ping")){
+                sendMessage(channel, sender + ": pong");
+            }
+            else if (command.equalsIgnoreCase("version")){
+                sendMessage(channel, sender + ": MeowBot v1.4.2, latell works right, maybe! Coding by GlowKitty.");
+            }
     	}
     	else if (checkCommand == '?'){
     		sendMessage(channel, sender + ": Factoids implemented soon-ish.");//do this.thing();

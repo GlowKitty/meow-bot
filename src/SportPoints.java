@@ -7,7 +7,7 @@ public class SportPoints{
 		this.sportPoint = sportPoint;
 
 	}
-	public long getPoints(SportPoints points, String user){
+	public int getPoints(SportPoints points, String user){
 		if (points.athleteHash == hash(user)){
 			return points.sportPoint;
 		}
@@ -15,6 +15,7 @@ public class SportPoints{
 			return 0;
 		}
 	}
+
 	public boolean getNick(SportPoints points, String user){
 		if (points.athleteHash == hash(user)){
 			return true;
@@ -23,7 +24,10 @@ public class SportPoints{
 			return false;
 		}
 	}
-	private long hash(String name){
+	public long getHash(SportPoints points){
+		return points.athleteHash;
+	}
+	public long hash(String name){
 		char[] nameC = new char[name.length()];
 		for (int i = 0; i < name.length(); i++){
 			nameC[i] = Character.toLowerCase(name.charAt(i));

@@ -1,4 +1,3 @@
-package TweeseeBot;
 //import org.jsoup.*;
 //import java.net.URLEncoder;
 //import org.jibble.pircbot.*;
