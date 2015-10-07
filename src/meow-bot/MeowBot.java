@@ -1,3 +1,4 @@
+package meow_bot;
 import org.jibble.pircbot.*;
 import java.io.*;
 import java.util.*;
@@ -185,7 +186,9 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 		SportPoints sP = new SportPoints();
 		for (int i = 0; i < sportPoints.size(); i++){
 			if (hashName(sportsballPlayer) == sP.getHash((SportPoints)sportPoints.get(i))){
-				sportPoints.set(i, SportPoints(sportsballPlayer, sP.getPoints((SportPoints)sportPoints.get(i), sportsballPlayer) + 1));
+				sP.setName(sportsballPlayer);
+				sP.setScore(sP.getPoints((SportPoints)sportPoints.get(i), sportsballPlayer) + 1);
+				sportPoints.set(i, sP);
 			}
 		}
 		return;
@@ -194,7 +197,9 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 		SportPoints sP = new SportPoints();
 		for (int i = 0; i < sportPoints.size(); i++){
 			if (sP.getNick((SportPoints)sportPoints.get(i), sportsballPlayer) == true){
-				sportPoints.set(i, SportPoints(sportsballPlayer, sP.getPoints((SportPoints)sportPoints.get(i), sportsballPlayer) - 1));
+				sP.setName(sportsballPlayer);
+				sP.setScore(sP.getPoints((SportPoints)sportPoints.get(i), sportsballPlayer) - 1);
+				sportPoints.set(i, sP);
 			}
 		}
 		return;

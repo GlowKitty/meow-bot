@@ -1,5 +1,5 @@
-./src/SportPoints.java
-./src/MeowBotMain.java
-./src/MeowBot.java
-./src/MeowBotC.java
-./src/LapFoxBot.java
+./src/meow-bot/SportPoints.java
+./src/meow-bot/MeowBotMain.java
+./src/meow-bot/MeowBot.java
+./src/meow-bot/MeowBotC.java
+./src/meow-bot/LapFoxBot.java

@@ -1,15 +1,22 @@
+package meow_bot;
 public class SportPoints{
 	private long athleteHash;
-	private int sportPoint;
+	private int score;
 	public SportPoints(){}
-	public SportPoints(String athlete, int sportPoint){
+	public SportPoints(String athlete, int score){
 		this.athleteHash = hash(athlete);
-		this.sportPoint = sportPoint;
+		this.score = score;
 
+	}
+	public void setName(String athlete){
+		this.athleteHash = hash(athlete);
+	}
+	public void setScore(int score){
+		this.score = score;
 	}
 	public int getPoints(SportPoints points, String user){
 		if (points.athleteHash == hash(user)){
-			return points.sportPoint;
+			return points.score;
 		}
 		else{
 			return 0;
