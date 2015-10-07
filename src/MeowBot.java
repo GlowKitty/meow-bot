@@ -184,8 +184,8 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 	private void addSportPoint(String sportsballPlayer) throws IOException{
 		SportPoints sP = new SportPoints();
 		for (int i = 0; i < sportPoints.size(); i++){
-			if (hashName(sportsballPlayer) == sp.hash(sportPoints.get(i))){
-				sportPoints.set(i, SportPoints(sportsballplayer, sP.getPoints(sportPoints.get(i), sportsballplayer) + 1));
+			if (hashName(sportsballPlayer) == sP.getHash((SportPoints)sportPoints.get(i))){
+				sportPoints.set(i, SportPoints(sportsballPlayer, sP.getPoints((SportPoints)sportPoints.get(i), sportsballPlayer) + 1));
 			}
 		}
 		return;
@@ -193,8 +193,8 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 	private void minusSportPoint(String sportsballPlayer) throws IOException{
 		SportPoints sP = new SportPoints();
 		for (int i = 0; i < sportPoints.size(); i++){
-			if (sP.hash(sportPoints.get(i), sportsballPlayer) == true){
-				sportPoints.set(i, SportPoints(sportsballplayer, sP.getPoints(sportPoints.get(i), sportsballplayer) - 1));
+			if (sP.getNick((SportPoints)sportPoints.get(i), sportsballPlayer) == true){
+				sportPoints.set(i, SportPoints(sportsballPlayer, sP.getPoints((SportPoints)sportPoints.get(i), sportsballPlayer) - 1));
 			}
 		}
 		return;
@@ -202,8 +202,8 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 	private int countSportPoints(String sportsballPlayer){
 		SportPoints sP = new SportPoints();
 		for (int i = 0; i < sportPoints.size(); i++){
-			if (sP.getNick(sportPoints.get(i), sportsballPlayer) == true){
-				return sP.getPoints(sportPoints.get(i), sportsballplayer);
+			if (sP.getNick((SportPoints)sportPoints.get(i), sportsballPlayer) == true){
+				return sP.getPoints((SportPoints)sportPoints.get(i), sportsballPlayer);
 			}
 		}
 		return 0;
