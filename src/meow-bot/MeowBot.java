@@ -1,4 +1,4 @@
-package meow_bot;
+package org.meowbot;
 import org.jibble.pircbot.*;
 import java.io.*;
 import java.util.*;
@@ -32,7 +32,7 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 		if (f.exists() == false){
 			saveFactoids();
 		}
-		ObjectInputStream in2 = new ObjectInputStream(new FileInputStream("factoids.robot"));//factoids.triangle
+		ObjectInputStream in2 = new ObjectInputStream(new FileInputStream("factoids.triangle"));
 		String[][] fTemp = (String[][]) in2.readObject();
 		in2.close();
 		for (int i = 0; i < 100; i++){
@@ -221,23 +221,23 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 		int hashR = 1;
 		for (int i = 0; i < nameC.length; i++){
 			switch (nameC[i]){
-			case 'a': hashR = hashR * 1^i;
+			case 'a': hashR = hashR *  1^i;
 				break;
-			case 'b': hashR = hashR * 2^i;
+			case 'b': hashR = hashR *  2^i;
 				break;
-			case 'c': hashR = hashR * 3^i;
+			case 'c': hashR = hashR *  3^i;
 				break;
-			case 'd': hashR = hashR * 4^i;
+			case 'd': hashR = hashR *  4^i;
 				break;
-			case 'e': hashR = hashR * 5^i;
+			case 'e': hashR = hashR *  5^i;
 		    	break;
-			case 'f': hashR = hashR * 6^i;
+			case 'f': hashR = hashR *  6^i;
 		    	break;
-			case 'g': hashR = hashR * 7^i;
+			case 'g': hashR = hashR *  7^i;
 				break;
-			case 'h': hashR = hashR * 8^i;
+			case 'h': hashR = hashR *  8^i;
 				break;
-			case 'i': hashR = hashR * 9^i;
+			case 'i': hashR = hashR *  9^i;
 				break;
 			case 'j': hashR = hashR * 10^i;
 				break;
@@ -345,7 +345,7 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
     	ObjectOutputStream out = null;
     	try {
 			out = new ObjectOutputStream(
-					new FileOutputStream("factoids")//factoids.triangle
+					new FileOutputStream("factoids.triangle")//factoids.triangle
 					);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

@@ -1,4 +1,4 @@
-package meow_bot;
+package org.meowbot;
 import org.jibble.pircbot.*;
 import java.io.*;
 public class MeowBotC extends PircBot{

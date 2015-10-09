@@ -1,4 +1,4 @@
-package meow_bot;
+package org.meowbot;
 import java.io.IOException;
 import org.jibble.pircbot.*;
 /*
@@ -9,7 +9,7 @@ import org.jibble.pircbot.*;
 		commons-beanutils-1.9.2
 */
 public class MeowBotMain {
-	public static void main(String[] args) throws Exception, IOException, IrcException {
+	public static void main(String[] args) throws Exception, IOException {
 		String channel = "#friendshiptriangle";
 		String network = "irc.synirc.net";
 		MeowBot bot = new MeowBot();

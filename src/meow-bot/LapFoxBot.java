@@ -1,4 +1,4 @@
-package meow_bot;
+package org.meowbot;
 import org.jibble.pircbot.*;
 import org.apache.commons.digester.rss.Channel;
 import org.apache.commons.digester.rss.Item;

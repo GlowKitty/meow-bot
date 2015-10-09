@@ -1,4 +1,4 @@
-package meow_bot;
+package org.meowbot;
 public class SportPoints{
 	private long athleteHash;
 	private int score;
