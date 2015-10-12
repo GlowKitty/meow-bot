@@ -1,12 +1,6 @@
 package org.meowbot;
 import java.io.IOException;
 import org.jibble.pircbot.*;
-/*
-	Dependancies:
-		pircbot
-		commons-digester-2.1
-		commons-digester-rss
-*/
 public class MeowBotMain {
 	public static void main(String[] args) throws Exception, IOException {
 		MeowBot bot = new MeowBot();
@@ -15,7 +9,7 @@ public class MeowBotMain {
 		bot.identify("sw113231");
 		bot.joinChannel("#friendshiptriangle");
 		bot.lTInit(); //better way of doing this needed *soon*
-
+/*
 		MeowBotC bot2 = new MeowBotC();
 		bot2.setVerbose(true);
 		bot2.connect("chat.freenode.net");
@@ -26,6 +20,16 @@ public class MeowBotMain {
 		bot3.setVerbose(true);
 		bot3.connect("irc.esper.net");
 		bot3.joinChannel("lapfoxtrax");
-		bot3.rssInit();
+		bot3.rssInit();*/
 	}
 }
+/*	TODO
+		-factoids from array to arraylist of objects
+		-latertell fixes
+		-google integration
+		-admin bot permissions
+	Dependancies:
+		-pircbot
+		-commons-digester-2.1
+		-commons-digester-rss
+*/

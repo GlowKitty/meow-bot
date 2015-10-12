@@ -6,7 +6,6 @@ public class SportPoints{
 	public SportPoints(String athlete, int score){
 		this.athleteHash = hash(athlete);
 		this.score = score;
-
 	}
 	public void setName(String athlete){
 		this.athleteHash = hash(athlete);
@@ -22,7 +21,6 @@ public class SportPoints{
 			return 0;
 		}
 	}
-
 	public boolean getNick(SportPoints points, String user){
 		if (points.athleteHash == hash(user)){
 			return true;

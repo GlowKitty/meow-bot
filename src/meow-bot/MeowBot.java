@@ -7,8 +7,8 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 		this.setName("MeowBotTesting");//GlowBot for robotics, MeowBot for tringle
 	}
 	ArrayList sportPoints = new ArrayList();
+	ArrayList factoids = new ArrayList();
 	String[][] lT = new String[100][2];
-	String[][] factoids = new String[100][100];
 	public void lTInit() throws FileNotFoundException, IOException, ClassNotFoundException{
 		for (int i = 0; i < 100; i++){
 			lT[i][0] = "";
@@ -23,22 +23,14 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 		for (int i = 0; i < sPT.size(); i++){
 			sportPoints.add(sPT.get(i));
 		}
-		for (int i = 0; i < 100; i++){//factoids
-			for (int x = 0; x < 100; x++){
-				factoids[i][x] = "";
-			}
-		}
-		File f = new File("factoids.triangle");//factoids.triange
+		File f = new File("factoids");
 		if (f.exists() == false){
 			saveFactoids();
 		}
-		ObjectInputStream in2 = new ObjectInputStream(new FileInputStream("factoids.triangle"));
-		String[][] fTemp = (String[][]) in2.readObject();
-		in2.close();
-		for (int i = 0; i < 100; i++){
-			for (int x = 0; x < 100; x++){
-				factoids[i][x] = fTemp[i][x];
-			}
+		ObjectInputStream in2 = new ObjectInputStream(new FileInputStream("factoids"));
+		ArrayList fct = (ArrayList)in.readObject();
+		for (int i = 0; i < fct.size(); i++){
+			factoids.add(fct.get(i));
 		}
 		System.out.println("init success");
 	}
@@ -112,9 +104,9 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
     		}
     		else if (cmdSplit[0].equalsIgnoreCase("learn")){
     			String[] factCmd = command.split(" as ");
-    			String userToLearn = factCmd[0].substring(6);
+    			String topic = factCmd[0].substring(6);
     			try {
-					addFactoid(userToLearn, factCmd[1], channel);
+					addFactoid(topic, factCmd[1]);
 					sendMessage(channel, sender + ": You did the good thing!");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -147,7 +139,7 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
     	}
     	else {
     		laterTellSend(channel, sender);
-    	}//probably not anything to do here...
+    	}
     }
     protected void onJoin(String channel, String sender, String login, String hostname){
     	laterTellSend(channel, sender);
@@ -191,6 +183,7 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 				sportPoints.set(i, sP);
 			}
 		}
+		saveArray();
 		return;
 	}
 	private void minusSportPoint(String sportsballPlayer) throws IOException{
@@ -202,6 +195,7 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 				sportPoints.set(i, sP);
 			}
 		}
+		saveArray();
 		return;
 	}
 	private int countSportPoints(String sportsballPlayer){
@@ -279,50 +273,42 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 		}
 		return hashR;
 	}
-	private void addFactoid(String user, String fact, String channel) throws IOException{
-		for (int i = 0; i < 100; i++){
-			if (factoids[i][0].equalsIgnoreCase(user) || factoids[i][0].equals("")){
-				factoids[i][0] = user;
-				for (int x = 1; x < 100; x++){
-					if (factoids[i][x].equalsIgnoreCase("")){
-						factoids[i][x] = fact;
-						saveFactoids();
-						return;
-					}
-				}
+	private void addFactoid(String topic, String fact) throws IOException{
+		for(int i = 0; i < factoids.size(); i++){
+			Factoids fct = (Factoids)factoids.get(i);
+			if (fct.getTopic().equalsIgnoreCase(topic)){
+				fct.newFactoid(fact);
+				factoids.set(i, fct);
+				saveFactoids();
+				return;
 			}
 		}
-		sendMessage(channel, "we've run out.. ... (extend yr damn arrays)");
+		Factoids newFct = new Factoids();
+		newFct.setTopic(topic);
+		newFct.newFactoid(fact);
+		factoids.add(newFct);
+		saveFactoids();
+		return;
 	}
-	private void removeFactoid(String user, int fact) throws IOException{
-		for (int i = 0; i < 100; i++){
-			if (factoids[i][0].equalsIgnoreCase(user)){
-				factoids[i][fact] = "";
-				for (int x = fact; x < 99; x++){
-					factoids[i][x] = factoids[i][x + 1];
-				}
+	private void removeFactoid(String topic, int factNum) throws IOException{
+		for (int i = 0; i < factoids.size(); i++){
+			Factoids fct = (Factoids)factoids.get(i);
+			if (fct.getTopic().equalsIgnoreCase(topic)){
+				fct.rmFactoid(factNum);
+				factoids.set(i, fct);
 				saveFactoids();
 				return;
 			}
 		}
 	}
-	private String getFactoids(String user){
-		String messageReturned = user + " is ";
-		for (int i = 0; i < 100; i++){
-			if (factoids[i][0].equalsIgnoreCase(user)){
-				messageReturned = messageReturned + "(#1) " + factoids[i][1];
-				for (int x = 2; x < 100; x++){
-					if (factoids[i][x].equals("")){
-						x = 200;
-						i = 200;
-					}
-					else {
-						messageReturned = messageReturned + ", (#" + x + ") " + factoids[i][x];
-					}
-				}
+	private String getFactoids(String topic){
+		for (int i = 0; i < factoids.size(); i++){
+			Factoids fct = (Factoids)factoids.get(i);
+			if (fct.getTopic().equalsIgnoreCase(topic)){
+				return fct.viewFactoids();
 			}
 		}
-		return messageReturned;
+		return "No factoids for " + topic;
 	}
 	public void saveArray() throws IOException {
     	ObjectOutputStream out = null;
@@ -345,7 +331,7 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
     	ObjectOutputStream out = null;
     	try {
 			out = new ObjectOutputStream(
-					new FileOutputStream("factoids.triangle")//factoids.triangle
+					new FileOutputStream("factoids")//factoids.triangle for old way of doing it
 					);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
