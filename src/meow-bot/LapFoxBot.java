@@ -23,9 +23,6 @@ public class LapFoxBot extends PircBot {
 			e1.printStackTrace();
 		}//rss refresh?
 		Item rssItemsTemp[] = rssChannel.findItems();
-		/*for (int i = 0; i < rssItemsTemp.length; i++){
-			this._rssItems[i] = rssItemsTemp[i];
-		}*/
 		this._isRss = true;
 		sendMessage("#lapfoxtrax", "Rss successfully initialised.");
 		return rssItemsTemp[0];

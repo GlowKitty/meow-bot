@@ -9,7 +9,7 @@ public class MeowBotMain {
 		bot.identify("sw113231");
 		bot.joinChannel("#friendshiptriangle");
 		bot.lTInit(); //better way of doing this needed *soon*
-/*
+
 		MeowBotC bot2 = new MeowBotC();
 		bot2.setVerbose(true);
 		bot2.connect("chat.freenode.net");
@@ -20,7 +20,26 @@ public class MeowBotMain {
 		bot3.setVerbose(true);
 		bot3.connect("irc.esper.net");
 		bot3.joinChannel("lapfoxtrax");
-		bot3.rssInit();*/
+		bot3.rssInit();
+
+		while (true){
+			if (!bot.isConnected()){
+				bot.connect("irc.synirc.net");
+				bot.identify("sw113231");
+				bot.joinChannel("#friendshiptriangle");
+				bot.lTInit();
+			}
+			if (!bot2.isConnected()){
+				bot2.connect("chat.freenode.net");
+				bot2.joinChannel("#bmhsprogramming");
+				bot2.lTInit();
+			}
+			if (!bot3.isConnected()){
+				bot3.connect("irc.esper.net");
+				bot3.joinChannel("lapfoxtrax");
+				bot3.rssInit();
+			}
+		}
 	}
 }
 /*	TODO

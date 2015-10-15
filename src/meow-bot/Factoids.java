@@ -1,13 +1,14 @@
 package org.meowbot;
 import java.util.*;
-public class Factoids{
+import java.io.*;
+public class Factoids implements Serializable{
 	String topic;
 	ArrayList facts = new ArrayList();
 	public Factoids(){}
 	public Factoids(String topic, String newFact){
 		this.topic = topic;
 		//this.facts = new ArrayList();
-		this.facts.add(newFact);
+		this.facts.add((String) newFact);
 	}
 	public void setTopic(String topic){
 		this.topic = topic;
@@ -21,7 +22,7 @@ public class Factoids{
 	public String viewFactoids(){
 		String toReturn = this.topic + " is ";
 		if (this.facts.size() == 1){
-			toReturn = toReturn + this.facts.get(1);
+			toReturn = toReturn + this.facts.get(0);
 		}
 		else if (this.facts.size() == 0){
 			return "No factoids for " + topic;

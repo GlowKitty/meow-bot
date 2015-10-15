@@ -18,19 +18,19 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 		if (s.exists() == false){
 			saveArray();
 		}
-		ObjectInputStream in = new ObjectInputStream(new FileInputStream("sport.points"));
-		ArrayList sPT = (ArrayList)in.readObject();
-		for (int i = 0; i < sPT.size(); i++){
-			sportPoints.add(sPT.get(i));
+		else{
+			ObjectInput in = new ObjectInputStream(new FileInputStream("sport.points"));
+			sportPoints = (ArrayList) in.readObject();
+			in.close();
 		}
 		File f = new File("factoids");
 		if (f.exists() == false){
 			saveFactoids();
 		}
-		ObjectInputStream in2 = new ObjectInputStream(new FileInputStream("factoids"));
-		ArrayList fct = (ArrayList)in.readObject();
-		for (int i = 0; i < fct.size(); i++){
-			factoids.add(fct.get(i));
+		else{
+			ObjectInput in2 = new ObjectInputStream(new FileInputStream("factoids"));
+			factoids = (ArrayList) in2.readObject();
+			in2.close();
 		}
 		System.out.println("init success");
 	}
@@ -176,13 +176,18 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
     }
 	private void addSportPoint(String sportsballPlayer) throws IOException{
 		SportPoints sP = new SportPoints();
+		sP.setName(sportsballPlayer);
 		for (int i = 0; i < sportPoints.size(); i++){
 			if (hashName(sportsballPlayer) == sP.getHash((SportPoints)sportPoints.get(i))){
-				sP.setName(sportsballPlayer);
 				sP.setScore(sP.getPoints((SportPoints)sportPoints.get(i), sportsballPlayer) + 1);
 				sportPoints.set(i, sP);
+				saveArray();
+				return;
 			}
 		}
+		sP.setName(sportsballPlayer);
+		sP.setScore(1);
+		sportPoints.add(sP);
 		saveArray();
 		return;
 	}
@@ -193,10 +198,10 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 				sP.setName(sportsballPlayer);
 				sP.setScore(sP.getPoints((SportPoints)sportPoints.get(i), sportsballPlayer) - 1);
 				sportPoints.set(i, sP);
+				saveArray();
+				return;
 			}
 		}
-		saveArray();
-		return;
 	}
 	private int countSportPoints(String sportsballPlayer){
 		SportPoints sP = new SportPoints();
@@ -295,27 +300,35 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 			Factoids fct = (Factoids)factoids.get(i);
 			if (fct.getTopic().equalsIgnoreCase(topic)){
 				fct.rmFactoid(factNum);
-				factoids.set(i, fct);
+				factoids.set((int) i, (Factoids) fct);
 				saveFactoids();
 				return;
 			}
 		}
 	}
 	private String getFactoids(String topic){
-		for (int i = 0; i < factoids.size(); i++){
-			Factoids fct = (Factoids)factoids.get(i);
-			if (fct.getTopic().equalsIgnoreCase(topic)){
-				return fct.viewFactoids();
+		try{
+			for (int i = 0; i < factoids.size(); i++){
+				Factoids fct = (Factoids)factoids.get(i);
+				if (fct.getTopic().equalsIgnoreCase(topic)){
+					return fct.viewFactoids();
+				}
 			}
+		}
+		catch (ArrayIndexOutOfBoundsException e){
+			e.printStackTrace();
+			return "This is complete bullshit, youre bad at code";
 		}
 		return "No factoids for " + topic;
 	}
 	public void saveArray() throws IOException {
-    	ObjectOutputStream out = null;
+    	ObjectOutput out = null;
+    	File f = new File("sport.points");
+    	if (!f.exists()){
+    		f.createNewFile();
+    	}
     	try {
-			out = new ObjectOutputStream(
-					new FileOutputStream("sport.points")
-					);
+			out = new ObjectOutputStream(new FileOutputStream(f));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -324,15 +337,17 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 			e.printStackTrace();
 		}
 	   	out.writeObject(sportPoints);
-		out.flush();
+		out.flush(); //flushes SPORTS toilet
 	    out.close();
 	}
 	public void saveFactoids() throws IOException {
-    	ObjectOutputStream out = null;
+    	ObjectOutput out = null;
+    	File f = new File("factoids");
+    	if (!f.exists()){
+    		f.createNewFile();
+    	}
     	try {
-			out = new ObjectOutputStream(
-					new FileOutputStream("factoids")//factoids.triangle for old way of doing it
-					);
+			out = new ObjectOutputStream(new FileOutputStream(f));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -341,7 +356,7 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 			e.printStackTrace();
 		}
 	   	out.writeObject(factoids);
-		out.flush();
+		out.flush(); //flushes toilet
 	    out.close();
 	}
 }

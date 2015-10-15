@@ -1,5 +1,7 @@
 package org.meowbot;
-public class SportPoints{
+import java.io.*;
+import java.util.ArrayList;
+public class SportPoints implements Serializable{
 	private long athleteHash;
 	private int score;
 	public SportPoints(){}
