@@ -1,5 +1,6 @@
 package org.meowbot;
 import org.jibble.pircbot.*;
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.digester.rss.Channel;
 import org.apache.commons.digester.rss.Item;
 import org.apache.commons.digester.rss.RSSDigester;
@@ -15,11 +16,13 @@ public class LapFoxBot extends PircBot {
         this.setName("Tweesee");
     }
     public Item rssInit() throws Exception, NullPointerException {
+        System.out.println(">>>Rss initialising");
     	Channel rssChannel = null;
 		try {
 			rssChannel = refreshFeed();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
+            System.out.println("Shit.");
 			e1.printStackTrace();
 		}//rss refresh?
 		Item rssItemsTemp[] = rssChannel.findItems();
@@ -33,7 +36,6 @@ public class LapFoxBot extends PircBot {
     		try {
 				rss();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     	}
