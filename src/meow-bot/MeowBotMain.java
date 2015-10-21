@@ -20,6 +20,7 @@ public class MeowBotMain {
 		bot3.setVerbose(true);
 		bot3.connect("irc.esper.net");
 		bot3.joinChannel("#lapfoxtrax");
+		bot3.lTInit();
 		bot3.rssInit();
 
 		while (true){
