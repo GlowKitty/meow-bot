@@ -112,7 +112,6 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 					// TODO Auto-generated catch block
 					sendMessage(channel, sender + ": well we fucked something up..........");
 					e.printStackTrace();
-
 				}
     		}
     		else if (cmdSplit[0].equalsIgnoreCase("forget")){

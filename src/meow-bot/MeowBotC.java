@@ -1,51 +1,38 @@
 package org.meowbot;
 import org.jibble.pircbot.*;
 import java.io.*;
-public class MeowBotC extends PircBot{
-	public MeowBotC(){
+import java.util.*;
+public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BECAUSE ITS CHANGED
+	public MeowBot(){
 		this.setName("GlowBotTesting");//GlowBot for robotics, MeowBot for tringle
 	}
+	ArrayList sportPoints = new ArrayList();
+	ArrayList factoids = new ArrayList();
 	String[][] lT = new String[100][2];
-	int[][] sportPoints = new int[100][2];
-	String[][] factoids = new String[100][100];
 	public void lTInit() throws FileNotFoundException, IOException, ClassNotFoundException{
 		for (int i = 0; i < 100; i++){
 			lT[i][0] = "";
 			lT[i][1] = "";
 		}//wow this does so much more than just init latell
-		for (int i = 0; i < 100; i++){
-			sportPoints[i][0] = 0;
-			sportPoints[i][1] = 0;
-		}
 		File s = new File("sport.points");
 		if (s.exists() == false){
 			saveArray();
 		}
-		ObjectInputStream in = new ObjectInputStream(new FileInputStream("sport.points"));
-		int sPT[][] = (int[][]) in.readObject();
-		in.close();
-		for (int i = 0; i < 100; i++){
-			sportPoints[i][0] = sPT[i][0];
-			sportPoints[i][1] = sPT[i][1];
+		else{
+			ObjectInput in = new ObjectInputStream(new FileInputStream("sport.points"));
+			sportPoints = (ArrayList) in.readObject();
+			in.close();
 		}
-		for (int i = 0; i < 100; i++){//factoids
-			for (int x = 0; x < 100; x++){
-				factoids[i][x] = "";
-			}
-		}
-		File f = new File("factoids.robot");//factoids.triange
+		File f = new File("factoids");
 		if (f.exists() == false){
 			saveFactoids();
 		}
-		ObjectInputStream in2 = new ObjectInputStream(new FileInputStream("factoids.robot"));//factoids.triangle
-		String[][] fTemp = (String[][]) in2.readObject();
-		in2.close();
-		for (int i = 0; i < 100; i++){
-			for (int x = 0; x < 100; x++){
-				factoids[i][x] = fTemp[i][x];
-			}
+		else{
+			ObjectInput in2 = new ObjectInputStream(new FileInputStream("factoids"));
+			factoids = (ArrayList) in2.readObject();
+			in2.close();
 		}
-		System.out.println("<<<init success>>>");
+		System.out.println("init success");
 	}
 	protected void onMessage(String channel, String sender, String login, String hostname, String message){
     	char checkCommand = message.charAt(0);
@@ -56,13 +43,13 @@ public class MeowBotC extends PircBot{
     			sendMessage(channel, sender + ": Test succeeded.");
     		}
     		else if(command.equalsIgnoreCase("help")){
-    			sendMessage(channel, sender + ": This will eventually list all avalable commands...");
+    			sendMessage(channel, sender + ": test, ping, version, one sport point <athlete>, minus one sport point <athlete>, score <athlete>, learn <thing> as <otherthing>,");
     		}
     		else if (command.equalsIgnoreCase("ping")){
     			sendMessage(channel, sender + ": pong");
     		}
     		else if (command.equalsIgnoreCase("version")){
-    			sendMessage(channel, sender + ": MeowBot v1.4.2c, latell works right, maybe! Coding by GlowKitty.");
+    			sendMessage(channel, sender + ": MeowBot v1.4.2, latell works right, maybe! Coding by GlowKitty.");
     		}
     		else if (cmdSplit[0].equalsIgnoreCase("one") && cmdSplit[1].equalsIgnoreCase("sport") && cmdSplit[2].equalsIgnoreCase("point")){
     			sendMessage(channel, sender + ": adding one sport point to " + cmdSplit[3] + "'s score");
@@ -70,8 +57,8 @@ public class MeowBotC extends PircBot{
 					addSportPoint(cmdSplit[3]);//adds ONE sport point
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
 					sendMessage(channel, sender + ": well we messed something up..........");
+					e.printStackTrace();
 				}
     			//sendMessage(channel, sender + ": " + cmdSplit[1] + " now has " + countSportPoints(cmdSplit[1]) + " sport points. What an athlete!");
     		}
@@ -81,10 +68,10 @@ public class MeowBotC extends PircBot{
 					minusSportPoint(cmdSplit[4]);//sbtracts ONE sport point
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
 					sendMessage(channel, sender + ": well we messed something up..........");
+					e.printStackTrace();
 				}
-    			sendMessage(channel, sender + ": " + cmdSplit[1] + " now has " + countSportPoints(cmdSplit[1]) + " sport points. What an athlete!");
+    			sendMessage(channel, sender + ": " + cmdSplit[4] + " now has " + countSportPoints(cmdSplit[4]) + " sport points. What an athlete!");
     		}
     		else if (cmdSplit[0].equalsIgnoreCase("score")){
     			sendMessage(channel, sender + ": " + cmdSplit[1] + " has " + countSportPoints(cmdSplit[1]) + " sport points. What an athlete!");
@@ -101,12 +88,15 @@ public class MeowBotC extends PircBot{
 						lTInit();
 					} catch (FileNotFoundException e1) {
 						// TODO Auto-generated catch block
+						sendMessage(channel, sender + ": well we messed something up..........");
 						e1.printStackTrace();
 					} catch (ClassNotFoundException e1) {
 						// TODO Auto-generated catch block
+						sendMessage(channel, sender + ": well we messed something up..........");
 						e1.printStackTrace();
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
+						sendMessage(channel, sender + ": well we messed something up..........");
 						e1.printStackTrace();
 					}
     				laterTell(channel, sender, message);
@@ -114,24 +104,24 @@ public class MeowBotC extends PircBot{
     		}
     		else if (cmdSplit[0].equalsIgnoreCase("learn")){
     			String[] factCmd = command.split(" as ");
-    			String userToLearn = factCmd[0].substring(6);
+    			String topic = factCmd[0].substring(6);
     			try {
-					addFactoid(userToLearn, factCmd[1], channel);
+					addFactoid(topic, factCmd[1]);
 					sendMessage(channel, sender + ": You did the good thing!");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
+					sendMessage(channel, sender + ": well we messed something up..........");
 					e.printStackTrace();
-					sendMessage(channel, sender + ": well something messed up,,,");
 				}
     		}
     		else if (cmdSplit[0].equalsIgnoreCase("forget")){
     			try {
 					removeFactoid(command.substring(7, command.length()-2), Integer.parseInt(cmdSplit[cmdSplit.length - 1]));
-					sendMessage(channel, sender + ": fucking fine");
+					sendMessage(channel, sender + ": fine");
 				} catch (NumberFormatException | IOException e) {
 					// TODO Auto-generated catch block
+					sendMessage(channel, sender + ": well we messed something up..........");
 					e.printStackTrace();
-					sendMessage(channel, sender + ": well something messed up,,,");
 				}
     		}
     		else {
@@ -148,7 +138,7 @@ public class MeowBotC extends PircBot{
     	}
     	else {
     		laterTellSend(channel, sender);
-    	}//probably not anything to do here...
+    	}
     }
     protected void onJoin(String channel, String sender, String login, String hostname){
     	laterTellSend(channel, sender);
@@ -184,52 +174,39 @@ public class MeowBotC extends PircBot{
     	return;
     }
 	private void addSportPoint(String sportsballPlayer) throws IOException{
-		int hashedName = hashName(sportsballPlayer);
-		for (int i = 0; i < 100; i++){
-			if (sportPoints[i][0] == hashedName){
-				sportPoints[i][1] = sportPoints[i][1] + 1;
+		SportPoints sP = new SportPoints();
+		sP.setName(sportsballPlayer);
+		for (int i = 0; i < sportPoints.size(); i++){
+			if (hashName(sportsballPlayer) == sP.getHash((SportPoints)sportPoints.get(i))){
+				sP.setScore(sP.getPoints((SportPoints)sportPoints.get(i), sportsballPlayer) + 1);
+				sportPoints.set(i, sP);
 				saveArray();
 				return;
 			}
-			else if (i == 99){
-				for (int x = 0; x < 100; x++){
-					if (sportPoints[x][0] == 0){
-						sportPoints[x][0] = hashedName;
-						sportPoints[x][1] = 1;
-						saveArray();
-						return;
-					}
-				}
-			}
 		}
+		sP.setName(sportsballPlayer);
+		sP.setScore(1);
+		sportPoints.add(sP);
+		saveArray();
 		return;
 	}
 	private void minusSportPoint(String sportsballPlayer) throws IOException{
-		int hashedName = hashName(sportsballPlayer);
-		for (int i = 0; i < 100; i++){
-			if (sportPoints[i][0] == hashedName){
-				sportPoints[i][1] = sportPoints[i][1] - 1;
+		SportPoints sP = new SportPoints();
+		for (int i = 0; i < sportPoints.size(); i++){
+			if (sP.getNick((SportPoints)sportPoints.get(i), sportsballPlayer) == true){
+				sP.setName(sportsballPlayer);
+				sP.setScore(sP.getPoints((SportPoints)sportPoints.get(i), sportsballPlayer) - 1);
+				sportPoints.set(i, sP);
 				saveArray();
 				return;
 			}
-			else if (i == 99){
-				for (int x = 0; x < 100; x++){
-					if (sportPoints[x][0] == 0){
-						sportPoints[x][0] = hashedName;
-						sportPoints[x][1] = 0;
-						saveArray();
-						return;
-					}
-				}
-			}
 		}
-		return;
 	}
 	private int countSportPoints(String sportsballPlayer){
-		int hashedName = hashName(sportsballPlayer);
-		for (int i = 0; i < 100; i++){
-			if (sportPoints[i][0] == hashedName){
-				return sportPoints[i][1];
+		SportPoints sP = new SportPoints();
+		for (int i = 0; i < sportPoints.size(); i++){
+			if (sP.getNick((SportPoints)sportPoints.get(i), sportsballPlayer) == true){
+				return sP.getPoints((SportPoints)sportPoints.get(i), sportsballPlayer);
 			}
 		}
 		return 0;
@@ -242,23 +219,23 @@ public class MeowBotC extends PircBot{
 		int hashR = 1;
 		for (int i = 0; i < nameC.length; i++){
 			switch (nameC[i]){
-			case 'a': hashR = hashR * 1^i;
+			case 'a': hashR = hashR *  1^i;
 				break;
-			case 'b': hashR = hashR * 2^i;
+			case 'b': hashR = hashR *  2^i;
 				break;
-			case 'c': hashR = hashR * 3^i;
+			case 'c': hashR = hashR *  3^i;
 				break;
-			case 'd': hashR = hashR * 4^i;
+			case 'd': hashR = hashR *  4^i;
 				break;
-			case 'e': hashR = hashR * 5^i;
+			case 'e': hashR = hashR *  5^i;
 		    	break;
-			case 'f': hashR = hashR * 6^i;
+			case 'f': hashR = hashR *  6^i;
 		    	break;
-			case 'g': hashR = hashR * 7^i;
+			case 'g': hashR = hashR *  7^i;
 				break;
-			case 'h': hashR = hashR * 8^i;
+			case 'h': hashR = hashR *  8^i;
 				break;
-			case 'i': hashR = hashR * 9^i;
+			case 'i': hashR = hashR *  9^i;
 				break;
 			case 'j': hashR = hashR * 10^i;
 				break;
@@ -300,57 +277,57 @@ public class MeowBotC extends PircBot{
 		}
 		return hashR;
 	}
-	private void addFactoid(String user, String fact, String channel) throws IOException{
-		for (int i = 0; i < 100; i++){
-			if (factoids[i][0].equalsIgnoreCase(user) || factoids[i][0].equals("")){
-				factoids[i][0] = user;
-				for (int x = 1; x < 100; x++){
-					if (factoids[i][x].equalsIgnoreCase("")){
-						factoids[i][x] = fact;
-						saveFactoids();
-						return;
-					}
-				}
+	private void addFactoid(String topic, String fact) throws IOException{
+		for(int i = 0; i < factoids.size(); i++){
+			Factoids fct = (Factoids)factoids.get(i);
+			if (fct.getTopic().equalsIgnoreCase(topic)){
+				fct.newFactoid(fact);
+				factoids.set(i, fct);
+				saveFactoids();
+				return;
 			}
 		}
-		sendMessage(channel, "we've run out.. ... (extend yr arrays)");
+		Factoids newFct = new Factoids();
+		newFct.setTopic(topic);
+		newFct.newFactoid(fact);
+		factoids.add(newFct);
+		saveFactoids();
+		return;
 	}
-	private void removeFactoid(String user, int fact) throws IOException{
-		for (int i = 0; i < 100; i++){
-			if (factoids[i][0].equalsIgnoreCase(user)){
-				factoids[i][fact] = "";
-				for (int x = fact; x < 99; x++){
-					factoids[i][x] = factoids[i][x + 1];
-				}
+	private void removeFactoid(String topic, int factNum) throws IOException{
+		for (int i = 0; i < factoids.size(); i++){
+			Factoids fct = (Factoids)factoids.get(i);
+			if (fct.getTopic().equalsIgnoreCase(topic)){
+				fct.rmFactoid(factNum);
+				factoids.set((int) i, (Factoids) fct);
 				saveFactoids();
 				return;
 			}
 		}
 	}
-	private String getFactoids(String user){
-		String messageReturned = user + " is ";
-		for (int i = 0; i < 100; i++){
-			if (factoids[i][0].equalsIgnoreCase(user)){
-				messageReturned = messageReturned + "(#1) " + factoids[i][1];
-				for (int x = 2; x < 100; x++){
-					if (factoids[i][x].equals("")){
-						x = 200;
-						i = 200;
-					}
-					else {
-						messageReturned = messageReturned + ", (#" + x + ") " + factoids[i][x];
-					}
+	private String getFactoids(String topic){
+		try{
+			for (int i = 0; i < factoids.size(); i++){
+				Factoids fct = (Factoids)factoids.get(i);
+				if (fct.getTopic().equalsIgnoreCase(topic)){
+					return fct.viewFactoids();
 				}
 			}
 		}
-		return messageReturned;
+		catch (ArrayIndexOutOfBoundsException e){
+			e.printStackTrace();
+			return "This is complete bullshit, youre bad at code";
+		}
+		return "No factoids for " + topic;
 	}
 	public void saveArray() throws IOException {
-    	ObjectOutputStream out = null;
+    	ObjectOutput out = null;
+    	File f = new File("sport.points");
+    	if (!f.exists()){
+    		f.createNewFile();
+    	}
     	try {
-			out = new ObjectOutputStream(
-					new FileOutputStream("sport.points")
-					);
+			out = new ObjectOutputStream(new FileOutputStream(f));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -359,15 +336,17 @@ public class MeowBotC extends PircBot{
 			e.printStackTrace();
 		}
 	   	out.writeObject(sportPoints);
-		out.flush();
+		out.flush(); //flushes SPORTS toilet
 	    out.close();
 	}
 	public void saveFactoids() throws IOException {
-    	ObjectOutputStream out = null;
+    	ObjectOutput out = null;
+    	File f = new File("factoids");
+    	if (!f.exists()){
+    		f.createNewFile();
+    	}
     	try {
-			out = new ObjectOutputStream(
-					new FileOutputStream("factoids.robot")//factoids.triangle
-					);
+			out = new ObjectOutputStream(new FileOutputStream(f));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -376,7 +355,7 @@ public class MeowBotC extends PircBot{
 			e.printStackTrace();
 		}
 	   	out.writeObject(factoids);
-		out.flush();
+		out.flush(); //flushes toilet
 	    out.close();
 	}
 }

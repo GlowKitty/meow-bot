@@ -30,11 +30,13 @@ public class MeowBotMain {
 				bot.joinChannel("#friendshiptriangle");
 				bot.lTInit();
 			}
+			
 			/*if (!bot2.isConnected()){
 				bot2.connect("chat.freenode.net");
 				bot2.joinChannel("#bmhsprogramming");
 				bot2.lTInit();
 			}*/
+			
 			if (!bot3.isConnected()){
 				bot3.connect("irc.esper.net");
 				bot3.joinChannel("#lapfoxtrax");
@@ -48,8 +50,5 @@ public class MeowBotMain {
 		-latertell fixes
 		-google integration
 		-admin bot permissions
-	Dependancies:
-		-pircbot
-		-commons-digester-2.1
-		-commons-digester-rss
+		-update lapfoxbot and meowbotc
 */
