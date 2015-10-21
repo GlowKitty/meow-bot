@@ -10,16 +10,16 @@ public class MeowBotMain {
 		bot.joinChannel("#friendshiptriangle");
 		bot.lTInit(); //better way of doing this needed *soon*
 
-		MeowBotC bot2 = new MeowBotC();
+		/*MeowBotC bot2 = new MeowBotC();
 		bot2.setVerbose(true);
 		bot2.connect("chat.freenode.net");
 		bot2.joinChannel("#bmhsprogramming");
-		bot2.lTInit();
+		bot2.lTInit();*/
 
 		LapFoxBot bot3 = new LapFoxBot();
 		bot3.setVerbose(true);
 		bot3.connect("irc.esper.net");
-		bot3.joinChannel("lapfoxtrax");
+		bot3.joinChannel("#lapfoxtrax");
 		bot3.rssInit();
 
 		while (true){
@@ -29,14 +29,14 @@ public class MeowBotMain {
 				bot.joinChannel("#friendshiptriangle");
 				bot.lTInit();
 			}
-			if (!bot2.isConnected()){
+			/*if (!bot2.isConnected()){
 				bot2.connect("chat.freenode.net");
 				bot2.joinChannel("#bmhsprogramming");
 				bot2.lTInit();
-			}
+			}*/
 			if (!bot3.isConnected()){
 				bot3.connect("irc.esper.net");
-				bot3.joinChannel("lapfoxtrax");
+				bot3.joinChannel("#lapfoxtrax");
 				bot3.rssInit();
 			}
 		}
