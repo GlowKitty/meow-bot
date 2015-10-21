@@ -130,9 +130,6 @@ public class LapFoxBot extends PircBot {
             else if (command.equalsIgnoreCase("version")){
                 sendMessage(channel, sender + ": MeowBot v1.4.2, latell works right, maybe! Coding by GlowKitty.");
             }
-            else if (command.equalsIgnoreCase("rss")){
-                rss();
-            }
             else if (cmdSplit[0].equalsIgnoreCase("one") && cmdSplit[1].equalsIgnoreCase("sport") && cmdSplit[2].equalsIgnoreCase("point")){
                 sendMessage(channel, sender + ": adding one sport point to " + cmdSplit[3] + "'s score");
                 try {
