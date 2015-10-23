@@ -366,7 +366,7 @@ public class LapFoxBot extends PircBot {
         for (int i = 0; i < factoids.size(); i++){
             Factoids fct = (Factoids)factoids.get(i);
             if (fct.getTopic().equalsIgnoreCase(topic)){
-                fct.rmFactoid(factNum);
+                fct.rmFactoid(factNum - 1);
                 factoids.set((int) i, (Factoids) fct);
                 saveFactoids();
                 return;

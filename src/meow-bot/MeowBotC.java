@@ -158,6 +158,7 @@ public class MeowBotC extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BE
     	return;
     }
 	private void addSportPoint(String sportsballPlayer) throws IOException{
+		loadSports();
 		SportPoints sP = new SportPoints();
 		sP.setName(sportsballPlayer);
 		for (int i = 0; i < sportPoints.size(); i++){
@@ -175,6 +176,7 @@ public class MeowBotC extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BE
 		return;
 	}
 	private void minusSportPoint(String sportsballPlayer) throws IOException{
+		loadSports();
 		SportPoints sP = new SportPoints();
 		for (int i = 0; i < sportPoints.size(); i++){
 			if (sP.getNick((SportPoints)sportPoints.get(i), sportsballPlayer) == true){
@@ -187,6 +189,7 @@ public class MeowBotC extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BE
 		}
 	}
 	private int countSportPoints(String sportsballPlayer){
+		loadSports();
 		SportPoints sP = new SportPoints();
 		for (int i = 0; i < sportPoints.size(); i++){
 			if (sP.getNick((SportPoints)sportPoints.get(i), sportsballPlayer) == true){
@@ -262,6 +265,7 @@ public class MeowBotC extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BE
 		return hashR;
 	}
 	private void addFactoid(String topic, String fact) throws IOException{
+		loadFactoids();
 		for(int i = 0; i < factoids.size(); i++){
 			Factoids fct = (Factoids)factoids.get(i);
 			if (fct.getTopic().equalsIgnoreCase(topic)){
@@ -279,10 +283,11 @@ public class MeowBotC extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BE
 		return;
 	}
 	private void removeFactoid(String topic, int factNum) throws IOException{
+		loadFactoids();
 		for (int i = 0; i < factoids.size(); i++){
 			Factoids fct = (Factoids)factoids.get(i);
 			if (fct.getTopic().equalsIgnoreCase(topic)){
-				fct.rmFactoid(factNum);
+				fct.rmFactoid(factNum - 1);
 				factoids.set((int) i, (Factoids) fct);
 				saveFactoids();
 				return;
@@ -290,6 +295,7 @@ public class MeowBotC extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BE
 		}
 	}
 	private String getFactoids(String topic){
+		loadFactoids();
 		try{
 			for (int i = 0; i < factoids.size(); i++){
 				Factoids fct = (Factoids)factoids.get(i);
