@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BECAUSE ITS CHANGED
 	public MeowBot(){
-		this.setName("MeowBotTesting");//GlowBot for robotics, MeowBot for tringle
+		this.setName("MeowBot");//GlowBot for robotics, MeowBot for tringle
 	}
 	ArrayList sportPoints = new ArrayList();
 	ArrayList factoids = new ArrayList();
@@ -43,13 +43,13 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
     			sendMessage(channel, sender + ": Test succeeded.");
     		}
     		else if(command.equalsIgnoreCase("help")){
-    			sendMessage(channel, sender + ": test, ping, version, one sport point <athlete>, minus one sport point <athlete>, score <athlete>, learn <thing> as <otherthing>,");
+    			sendMessage(channel, sender + ": test, ping, version, one sport point <athlete>, minus one sport point <athlete>, score <athlete>, learn <thing> as <otherthing>, forget <thing> <number>, ?<thing>");
     		}
     		else if (command.equalsIgnoreCase("ping")){
     			sendMessage(channel, sender + ": pong");
     		}
     		else if (command.equalsIgnoreCase("version")){
-    			sendMessage(channel, sender + ": MeowBot v1.4.2, latell works right, maybe! Coding by GlowKitty.");
+    			sendMessage(channel, sender + ": MeowBot v2.0 with less bugs and actual features. Coding by GlowKitty.");
     		}
     		else if (cmdSplit[0].equalsIgnoreCase("one") && cmdSplit[1].equalsIgnoreCase("sport") && cmdSplit[2].equalsIgnoreCase("point")){
     			sendMessage(channel, sender + ": adding one sport point to " + cmdSplit[3] + "'s score");

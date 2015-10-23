@@ -15,7 +15,7 @@ public class LapFoxBot extends PircBot {
 	public boolean _isRss = false;
 	private static final String regex = "/[\\p{Alpha}\\p{Digit}]{6}/";
     public LapFoxBot() {
-        this.setName("TweeseeTesting");
+        this.setName("Tweesee");
     }
     ArrayList sportPoints = new ArrayList();
     ArrayList factoids = new ArrayList();
@@ -122,13 +122,13 @@ public class LapFoxBot extends PircBot {
                 sendMessage(channel, sender + ": Test succeeded.");
             }
             else if(command.equalsIgnoreCase("help")){
-                sendMessage(channel, sender + ": test, ping, version, one sport point <athlete>, minus one sport point <athlete>, score <athlete>, learn <thing> as <otherthing>,");
+                sendMessage(channel, sender + ": test, ping, version, one sport point <athlete>, minus one sport point <athlete>, score <athlete>, learn <thing> as <otherthing>, forget <thing> <number>, ?<thing>");
             }
             else if (command.equalsIgnoreCase("ping")){
                 sendMessage(channel, sender + ": pong");
             }
             else if (command.equalsIgnoreCase("version")){
-                sendMessage(channel, sender + ": MeowBot v1.4.2, latell works right, maybe! Coding by GlowKitty.");
+                sendMessage(channel, sender + ": MeowBot v2.0 with less bugs and actual features. Coding by GlowKitty.");
             }
             else if (cmdSplit[0].equalsIgnoreCase("one") && cmdSplit[1].equalsIgnoreCase("sport") && cmdSplit[2].equalsIgnoreCase("point")){
                 sendMessage(channel, sender + ": adding one sport point to " + cmdSplit[3] + "'s score");
