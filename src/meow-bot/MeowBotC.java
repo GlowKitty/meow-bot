@@ -14,24 +14,8 @@ public class MeowBotC extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BE
 			lT[i][0] = "";
 			lT[i][1] = "";
 		}//wow this does so much more than just init latell
-		File s = new File("sport.points");
-		if (s.exists() == false){
-			saveArray();
-		}
-		else{
-			ObjectInput in = new ObjectInputStream(new FileInputStream("sport.points"));
-			sportPoints = (ArrayList) in.readObject();
-			in.close();
-		}
-		File f = new File("factoids");
-		if (f.exists() == false){
-			saveFactoids();
-		}
-		else{
-			ObjectInput in2 = new ObjectInputStream(new FileInputStream("factoids"));
-			factoids = (ArrayList) in2.readObject();
-			in2.close();
-		}
+		loadSports();
+		loadFactoids();
 		System.out.println("init success");
 	}
 	protected void onMessage(String channel, String sender, String login, String hostname, String message){
@@ -49,7 +33,7 @@ public class MeowBotC extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BE
     			sendMessage(channel, sender + ": pong");
     		}
     		else if (command.equalsIgnoreCase("version")){
-    			sendMessage(channel, sender + ": MeowBot v2.0 with less bugs and actual features. Coding by GlowKitty.");
+    			sendMessage(channel, sender + ": MeowBot v2.1 with less bugs and actual features. Coding by GlowKitty.");
     		}
     		else if (cmdSplit[0].equalsIgnoreCase("one") && cmdSplit[1].equalsIgnoreCase("sport") && cmdSplit[2].equalsIgnoreCase("point")){
     			sendMessage(channel, sender + ": adding one sport point to " + cmdSplit[3] + "'s score");
@@ -357,5 +341,53 @@ public class MeowBotC extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BE
 	   	out.writeObject(factoids);
 		out.flush(); //flushes toilet
 	    out.close();
+	}
+	public void loadSports(){
+		File s = new File("sport.points");
+		if (s.exists() == false){
+			try{
+				saveArray();
+			}
+			catch (IOException e){
+				e.printStackTrace();
+			}
+		}
+		else{
+			try{
+				ObjectInput in = new ObjectInputStream(new FileInputStream("sport.points"));
+				sportPoints = (ArrayList) in.readObject();
+				in.close();
+			}
+			catch (IOException e){
+				e.printStackTrace();
+			}
+			catch (ClassNotFoundException e1){
+				e1.printStackTrace();
+			}
+		}
+	}
+	public void loadFactoids(){
+		File f = new File("factoids");
+		if (f.exists() == false){
+			try{
+				saveArray();
+			}
+			catch (IOException e){
+				e.printStackTrace();
+			}
+		}
+		else{
+			try{
+				ObjectInput in2 = new ObjectInputStream(new FileInputStream("factoids"));
+				factoids = (ArrayList) in2.readObject();
+				in2.close();
+			}
+			catch (IOException e){
+				e.printStackTrace();
+			}
+			catch (ClassNotFoundException e1){
+				e1.printStackTrace();
+			}
+		}
 	}
 }

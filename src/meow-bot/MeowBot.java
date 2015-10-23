@@ -14,24 +14,8 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 			lT[i][0] = "";
 			lT[i][1] = "";
 		}//wow this does so much more than just init latell
-		File s = new File("sport.points");
-		if (s.exists() == false){
-			saveArray();
-		}
-		else{
-			ObjectInput in = new ObjectInputStream(new FileInputStream("sport.points"));
-			sportPoints = (ArrayList) in.readObject();
-			in.close();
-		}
-		File f = new File("factoids");
-		if (f.exists() == false){
-			saveFactoids();
-		}
-		else{
-			ObjectInput in2 = new ObjectInputStream(new FileInputStream("factoids"));
-			factoids = (ArrayList) in2.readObject();
-			in2.close();
-		}
+		loadSports();
+		loadFactoids();
 		System.out.println("init success");
 	}
 	protected void onMessage(String channel, String sender, String login, String hostname, String message){
@@ -49,7 +33,7 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
     			sendMessage(channel, sender + ": pong");
     		}
     		else if (command.equalsIgnoreCase("version")){
-    			sendMessage(channel, sender + ": MeowBot v2.0 with less bugs and actual features. Coding by GlowKitty.");
+    			sendMessage(channel, sender + ": MeowBot v2.1 with less bugs and actual features. Coding by GlowKitty");
     		}
     		else if (cmdSplit[0].equalsIgnoreCase("one") && cmdSplit[1].equalsIgnoreCase("sport") && cmdSplit[2].equalsIgnoreCase("point")){
     			sendMessage(channel, sender + ": adding one sport point to " + cmdSplit[3] + "'s score");
@@ -164,6 +148,7 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 		sendMessage(channel, sender + ": Ok, I'll let them know");
 	}
 	private void laterTellSend(String channel, String sender)throws NullPointerException{
+		loadSports();
     	for (int i = 0; i < 50; i++){
     		if (lT[i][0].equalsIgnoreCase(sender)){
     			sendMessage(channel, sender + ": " + lT[i][1]);
@@ -174,6 +159,7 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
     	return;
     }
 	private void addSportPoint(String sportsballPlayer) throws IOException{
+		loadSports();
 		SportPoints sP = new SportPoints();
 		sP.setName(sportsballPlayer);
 		for (int i = 0; i < sportPoints.size(); i++){
@@ -203,6 +189,7 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 		}
 	}
 	private int countSportPoints(String sportsballPlayer){
+		loadSports();
 		SportPoints sP = new SportPoints();
 		for (int i = 0; i < sportPoints.size(); i++){
 			if (sP.getNick((SportPoints)sportPoints.get(i), sportsballPlayer) == true){
@@ -278,6 +265,7 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 		return hashR;
 	}
 	private void addFactoid(String topic, String fact) throws IOException{
+		loadFactoids();
 		for(int i = 0; i < factoids.size(); i++){
 			Factoids fct = (Factoids)factoids.get(i);
 			if (fct.getTopic().equalsIgnoreCase(topic)){
@@ -295,6 +283,7 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 		return;
 	}
 	private void removeFactoid(String topic, int factNum) throws IOException{
+		loadFactoids();
 		for (int i = 0; i < factoids.size(); i++){
 			Factoids fct = (Factoids)factoids.get(i);
 			if (fct.getTopic().equalsIgnoreCase(topic)){
@@ -306,6 +295,7 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 		}
 	}
 	private String getFactoids(String topic){
+		loadFactoids();
 		try{
 			for (int i = 0; i < factoids.size(); i++){
 				Factoids fct = (Factoids)factoids.get(i);
@@ -357,5 +347,53 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
 	   	out.writeObject(factoids);
 		out.flush(); //flushes toilet
 	    out.close();
+	}
+	public void loadSports(){
+		File s = new File("sport.points");
+		if (s.exists() == false){
+			try{
+				saveArray();
+			}
+			catch (IOException e){
+				e.printStackTrace();
+			}
+		}
+		else{
+			try{
+				ObjectInput in = new ObjectInputStream(new FileInputStream("sport.points"));
+				sportPoints = (ArrayList) in.readObject();
+				in.close();
+			}
+			catch (IOException e){
+				e.printStackTrace();
+			}
+			catch (ClassNotFoundException e1){
+				e1.printStackTrace();
+			}
+		}
+	}
+	public void loadFactoids(){
+		File f = new File("factoids");
+		if (f.exists() == false){
+			try{
+				saveArray();
+			}
+			catch (IOException e){
+				e.printStackTrace();
+			}
+		}
+		else{
+			try{
+				ObjectInput in2 = new ObjectInputStream(new FileInputStream("factoids"));
+				factoids = (ArrayList) in2.readObject();
+				in2.close();
+			}
+			catch (IOException e){
+				e.printStackTrace();
+			}
+			catch (ClassNotFoundException e1){
+				e1.printStackTrace();
+			}
+		}
 	}
 }
