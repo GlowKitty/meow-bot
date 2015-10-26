@@ -1,14 +1,22 @@
 package org.meowbot;
 import org.jibble.pircbot.*;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.digester.rss.Channel;
+import org.apache.commons.digester.rss.Item;
+import org.apache.commons.digester.rss.RSSDigester;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 public class LapFoxBot extends PircBot {
+	public Item rssAtZero = null;//initialise rss feed comparison item
+	public boolean _isRss = false;
+	private static final String regex = "/[\\p{Alpha}\\p{Digit}]{6}/";
     public LapFoxBot() {
         this.setName("TweeseeTesting");
     }
-    public RssFeedUpdater feed = new RssFeedUpdater();
     ArrayList sportPoints = new ArrayList();
     ArrayList factoids = new ArrayList();
     String[][] lT = new String[100][2];
@@ -21,23 +29,73 @@ public class LapFoxBot extends PircBot {
         loadFactoids();
         System.out.println("init success for Tweesee");
     }
+    public Item rssInit() throws Exception, NullPointerException {
+        System.out.println(">>>Rss initialising");
+    	Channel rssChannel = null;
+		try {
+			rssChannel = refreshFeed();
+		} catch (Exception e1) {
+            System.out.println("Shit.");
+            sendMessage("#lapfoxtrax", "Rss failed to initialise.");
+			e1.printStackTrace();
+		}
+		Item rssItemsTemp[] = rssChannel.findItems();
+		this._isRss = true;
+		sendMessage("#lapfoxtrax", "Rss successfully initialised.");
+        rssAtZero = rssItemsTemp[0];
+		return rssItemsTemp[0];
+    }
     protected void onServerPing(String response) throws NullPointerException {
     	this.sendRawLine("PONG " + response);
-        String tmp = "";
-        try{
-            tmp = feed.rss();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        finally{
-            if (tmp.length() > 0){
-                sendMessage("#lapfoxtrax", tmp);
-            }
-            else {
-            //do none
-            }
-        }
+    	if (_isRss == true){
+    		try {
+				rss();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+    	}
+    }
+    protected void rss() throws Exception, NullPointerException{ //checks reddits rss feed and compares to previous item
+    		this.sendRawLine("checking rss feed");//
+    		Channel rssChannelTemp = null;
+			try {
+				rssChannelTemp = refreshFeed();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Item refreshedItems[] = rssChannelTemp.findItems();//init and populate refreshedItems[]
+			if (!refreshedItems[0].getTitle().equals(rssAtZero.getTitle())) {//comparisons and line prints
+				String shortenedUrl = shortenUrl(refreshedItems[0].getLink());
+	        	sendMessage("#lapfoxtrax","New post: " + refreshedItems[0].getTitle() + " " + shortenedUrl);
+				System.out.println("New post on /r/lapfoxtrax: " + refreshedItems[0].getTitle() + " " + refreshedItems[0].getLink());
+				rssAtZero = refreshedItems[0];
+			}
+			System.out.println("last post: " + refreshedItems[0].getTitle());
+    }
+    protected Channel refreshFeed() throws Exception {
+		RSSDigester digester = new RSSDigester();
+		String feed = "https://www.reddit.com/r/lapfoxtrax/new/.rss";
+		URL url = new URL(feed);
+		HttpURLConnection httpSource = (HttpURLConnection)url.openConnection();
+		Channel rssChannel = (Channel)digester.parse(httpSource.getInputStream());
+		return rssChannel;
+    }
+    protected String shortenUrl(String url){
+    	Pattern p = Pattern.compile(regex);
+    	Matcher m = p.matcher(url);
+    	int startR = 0;
+    	int endR = 0;
+    	m.find();
+    	startR = m.start();
+    	endR = m.end();
+    	System.out.println(startR + " " + endR);
+    	String regDone = "";
+    	for (int o = startR + 1; o <= endR - 1; o++){
+    		regDone = regDone + url.charAt(o);
+    	}
+    	System.out.println("url successfully shortened: http://redd.it/" + regDone);
+    	return "http://redd.it/" + regDone;
     }
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
     	char checkCommand = message.charAt(0);
@@ -56,7 +114,7 @@ public class LapFoxBot extends PircBot {
             else if (command.equalsIgnoreCase("version")){
                 sendMessage(channel, sender + ": MeowBot v2.1 with less bugs and actual features. Coding by GlowKitty.");
             }
-           /* else if (command.equalsIgnoreCase("rssinit")){
+            else if (command.equalsIgnoreCase("rssinit")){
                 try{
                     rssInit();
                 }
@@ -73,7 +131,7 @@ public class LapFoxBot extends PircBot {
                     sendMessage("#lapfoxtrax", "fuck.");
                     e.printStackTrace();
                 }
-            }*/
+            }
             else if (cmdSplit[0].equalsIgnoreCase("one") && cmdSplit[1].equalsIgnoreCase("sport") && cmdSplit[2].equalsIgnoreCase("point")){
                 sendMessage(channel, sender + ": adding one sport point to " + cmdSplit[3] + "'s score");
                 try {

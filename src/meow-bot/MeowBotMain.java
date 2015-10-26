@@ -21,7 +21,6 @@ public class MeowBotMain {
 		bot3.connect("irc.esper.net");
 		bot3.joinChannel("#lapfoxtrax");
 		bot3.lTInit();
-		bot3.rssInit();
 
 		while (true){
 			if (!bot.isConnected()){
@@ -40,7 +39,6 @@ public class MeowBotMain {
 			if (!bot3.isConnected()){
 				bot3.connect("irc.esper.net");
 				bot3.joinChannel("#lapfoxtrax");
-				bot3.rssInit();
 			}
 		}
 	}
