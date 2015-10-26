@@ -15,7 +15,7 @@ public class LapFoxBot extends PircBot {
 	public boolean _isRss = false;
 	private static final String regex = "/[\\p{Alpha}\\p{Digit}]{6}/";
     public LapFoxBot() {
-        this.setName("Tweesee");
+        this.setName("TweeseeTesting");
     }
     ArrayList sportPoints = new ArrayList();
     ArrayList factoids = new ArrayList();
@@ -36,11 +36,13 @@ public class LapFoxBot extends PircBot {
 			rssChannel = refreshFeed();
 		} catch (Exception e1) {
             System.out.println("Shit.");
+            sendMessage("#lapfoxtrax", "Rss failed to initialise.");
 			e1.printStackTrace();
 		}
 		Item rssItemsTemp[] = rssChannel.findItems();
 		this._isRss = true;
 		sendMessage("#lapfoxtrax", "Rss successfully initialised.");
+        rssAtZero = rssItemsTemp[0];
 		return rssItemsTemp[0];
     }
     protected void onServerPing(String response) throws NullPointerException {
@@ -75,10 +77,8 @@ public class LapFoxBot extends PircBot {
 		RSSDigester digester = new RSSDigester();
 		String feed = "https://www.reddit.com/r/lapfoxtrax/new/.rss";
 		URL url = new URL(feed);
-		HttpURLConnection httpSource = 
-			(HttpURLConnection)url.openConnection();
-		Channel rssChannel=
-				(Channel)digester.parse(httpSource.getInputStream());
+		HttpURLConnection httpSource = (HttpURLConnection)url.openConnection();
+		Channel rssChannel = (Channel)digester.parse(httpSource.getInputStream());
 		return rssChannel;
     }
     protected String shortenUrl(String url){
@@ -113,6 +113,24 @@ public class LapFoxBot extends PircBot {
             }
             else if (command.equalsIgnoreCase("version")){
                 sendMessage(channel, sender + ": MeowBot v2.1 with less bugs and actual features. Coding by GlowKitty.");
+            }
+            else if (command.equalsIgnoreCase("rssinit")){
+                try{
+                    rssInit();
+                }
+                catch (Exception e){
+                    sendMessage("#lapfoxtrax", "fuck.");
+                    e.printStackTrace();
+                }
+            }
+            else if (command.equalsIgnoreCase("rss")){
+                try{
+                    rss();
+                }
+                catch (Exception e){
+                    sendMessage("#lapfoxtrax", "fuck.");
+                    e.printStackTrace();
+                }
             }
             else if (cmdSplit[0].equalsIgnoreCase("one") && cmdSplit[1].equalsIgnoreCase("sport") && cmdSplit[2].equalsIgnoreCase("point")){
                 sendMessage(channel, sender + ": adding one sport point to " + cmdSplit[3] + "'s score");
