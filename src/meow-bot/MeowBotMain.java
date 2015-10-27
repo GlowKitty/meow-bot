@@ -3,7 +3,7 @@ import java.io.IOException;
 import org.jibble.pircbot.*;
 public class MeowBotMain {
 	public static void main(String[] args) throws Exception, IOException {
-		MeowBot bot = new MeowBot("MeowBotTesting");
+		MeowBot bot = new MeowBot("MeowBot");
 		bot.lTInit(); //better way of doing this needed *soon*
 		bot.setVerbose(true);
 		bot.connect("irc.synirc.net");
@@ -13,10 +13,10 @@ public class MeowBotMain {
 		MeowBotC bot2 = new MeowBotC("GlowBot");
 		bot2.lTInit();
 		bot2.setVerbose(true);
-		bot2.connect("morgan.freenode.net");//chat.freenode.net
+		bot2.connect("chat.freenode.net");//chat.freenode.net
 		bot2.joinChannel("#bmhsprogramming");
 
-		LapFoxBot bot3 = new LapFoxBot("TweeseeTesting");
+		LapFoxBot bot3 = new LapFoxBot("Tweesee");
 		bot3.lTInit();
 		bot3.setVerbose(true);
 		bot3.connect("irc.esper.net");
