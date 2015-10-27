@@ -1,5 +1,4 @@
 package org.meowbot;
-import org.jibble.pircbot.*;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.digester.rss.Channel;
 import org.apache.commons.digester.rss.Item;
@@ -15,7 +14,7 @@ public class RssFeedUpdater{
 	public static Item rssAtZero = null;//initialise rss feed comparison item
 	public static boolean _isRss = false;
 	private static final String regex = "/[\\p{Alpha}\\p{Digit}]{6}/";
-	public static void RssFeedUpdater(){
+	public static void rssInit(){
 		Channel rssChannel = null;
 		try {
 			rssChannel = refreshFeed();
@@ -25,10 +24,16 @@ public class RssFeedUpdater{
 		}
 		Item rssItemsTemp[] = rssChannel.findItems();
 		_isRss = true;
-		System.out.println(">>Rss successfully initialised. *spellfixfix");
         rssAtZero = rssItemsTemp[0];
+		System.out.println(">>Rss successfully initialised. *spellfixfix");
+		try{
+			rss();
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
 	}
-    protected String rss() throws Exception, NullPointerException{ //checks reddits rss feed and compares to previous item
+    public static String rss() throws Exception, NullPointerException{ //checks reddits rss feed and compares to previous item
     		Channel rssChannelTemp = null;
 			try {
 				rssChannelTemp = refreshFeed();
@@ -52,7 +57,7 @@ public class RssFeedUpdater{
 		Channel rssChannel = (Channel)digester.parse(httpSource.getInputStream());
 		return rssChannel;
     }
-    protected String shortenUrl(String url){
+    protected static String shortenUrl(String url){
     	Pattern p = Pattern.compile(regex);
     	Matcher m = p.matcher(url);
     	int startR = 0;

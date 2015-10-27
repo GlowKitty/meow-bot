@@ -3,37 +3,35 @@ import java.io.IOException;
 import org.jibble.pircbot.*;
 public class MeowBotMain {
 	public static void main(String[] args) throws Exception, IOException {
-		MeowBot bot = new MeowBot();
+		MeowBot bot = new MeowBot("MeowBotTesting");
+		bot.lTInit(); //better way of doing this needed *soon*
 		bot.setVerbose(true);
 		bot.connect("irc.synirc.net");
 		bot.identify("sw113231");
 		bot.joinChannel("#friendshiptriangle");
-		bot.lTInit(); //better way of doing this needed *soon*
 
-		MeowBotC bot2 = new MeowBotC();
-		bot2.setVerbose(true);
-		bot2.connect("chat.freenode.net");
-		bot2.joinChannel("#bmhsprogramming");
+		MeowBotC bot2 = new MeowBotC("GlowBot");
 		bot2.lTInit();
+		bot2.setVerbose(true);
+		bot2.connect("morgan.freenode.net");//chat.freenode.net
+		bot2.joinChannel("#bmhsprogramming");
 
-		LapFoxBot bot3 = new LapFoxBot();
+		LapFoxBot bot3 = new LapFoxBot("TweeseeTesting");
+		bot3.lTInit();
 		bot3.setVerbose(true);
 		bot3.connect("irc.esper.net");
 		bot3.joinChannel("#lapfoxtrax");
-		bot3.lTInit();
 
 		while (true){
 			if (!bot.isConnected()){
 				bot.connect("irc.synirc.net");
 				bot.identify("sw113231");
 				bot.joinChannel("#friendshiptriangle");
-				bot.lTInit();
 			}
 			
 			if (!bot2.isConnected()){
 				bot2.connect("chat.freenode.net");
 				bot2.joinChannel("#bmhsprogramming");
-				bot2.lTInit();
 			}
 
 			if (!bot3.isConnected()){

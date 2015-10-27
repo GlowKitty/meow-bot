@@ -3,8 +3,8 @@ import org.jibble.pircbot.*;
 import java.io.*;
 import java.util.*;
 public class MeowBotC extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BECAUSE ITS CHANGED
-	public MeowBotC(){
-		this.setName("GlowBot");//GlowBot for robotics, MeowBot for tringle
+	public MeowBotC(String name){
+		this.setName(name);//GlowBot for robotics, MeowBot for tringle
 	}
 	ArrayList sportPoints = new ArrayList();
 	ArrayList factoids = new ArrayList();

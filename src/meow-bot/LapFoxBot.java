@@ -5,10 +5,10 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 public class LapFoxBot extends PircBot {
-    public LapFoxBot() {
-        this.setName("TweeseeTesting");
+    public LapFoxBot(String name) {
+        this.setName(name);
     }
-    public RssFeedUpdater feed = new RssFeedUpdater();
+    public RssFeedUpdater feed = null;
     ArrayList sportPoints = new ArrayList();
     ArrayList factoids = new ArrayList();
     String[][] lT = new String[100][2];
@@ -19,6 +19,8 @@ public class LapFoxBot extends PircBot {
         }//wow this does so much more than just init latell
         loadSports();
         loadFactoids();
+        feed = new RssFeedUpdater();
+        feed.rssInit();
         System.out.println("init success for Tweesee");
     }
     protected void onServerPing(String response) throws NullPointerException {
@@ -33,9 +35,6 @@ public class LapFoxBot extends PircBot {
         finally{
             if (tmp.length() > 0){
                 sendMessage("#lapfoxtrax", tmp);
-            }
-            else {
-            //do none
             }
         }
     }
