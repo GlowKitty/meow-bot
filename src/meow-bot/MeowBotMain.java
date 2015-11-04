@@ -3,7 +3,7 @@ import java.io.IOException;
 import org.jibble.pircbot.*;
 public class MeowBotMain {
 	public static void main(String[] args) throws Exception, IOException {
-		String version = "MeowBot v2.1 with optimisations and fewer bugs, it think";
+		String version = "MeowBot v2.1.1 with optimisations and fewer bugs, it think";
 
 		MeowBot bot = new MeowBot();
 		bot.setVer(version);

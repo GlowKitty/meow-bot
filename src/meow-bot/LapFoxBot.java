@@ -1,8 +1,6 @@
 package org.meowbot;
-import java.io.*;
-import java.util.*;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
+import java.io.IOException;
+import java.io.FileNotFoundException;
 public class LapFoxBot extends MeowBot {
     public RssFeedUpdater feed = null;
     public void rssInitAgain() throws FileNotFoundException, IOException, ClassNotFoundException{
