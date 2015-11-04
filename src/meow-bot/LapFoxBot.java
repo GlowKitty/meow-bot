@@ -4,10 +4,7 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
-public class LapFoxBot extends PircBot {
-    public LapFoxBot(String name) {
-        this.setName(name);
-    }
+public class LapFoxBot extends MeowBot {
     public RssFeedUpdater feed = null;
     public void rssInitAgain() throws FileNotFoundException, IOException, ClassNotFoundException{
         feed = new RssFeedUpdater();
