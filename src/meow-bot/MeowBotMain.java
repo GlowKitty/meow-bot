@@ -17,6 +17,7 @@ public class MeowBotMain {
 		bot2.joinChannel("#bmhsprogramming");
 
 		LapFoxBot bot3 = new LapFoxBot("Tweesee");
+		bot3.rssInitAgain();
 		bot3.lTInit();
 		bot3.setVerbose(true);
 		bot3.connect("irc.esper.net");
@@ -41,10 +42,3 @@ public class MeowBotMain {
 		}
 	}
 }
-/*	TODO
-		-factoids from array to arraylist of objects
-		-latertell fixes
-		-google integration
-		-admin bot permissions
-		-update lapfoxbot and meowbotc
-*/
