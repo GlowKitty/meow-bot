@@ -3,7 +3,10 @@ import java.io.IOException;
 import org.jibble.pircbot.*;
 public class MeowBotMain {
 	public static void main(String[] args) throws Exception, IOException {
+		String version = "MeowBot v2.1 with optimisations and fewer bugs, it think";
+
 		MeowBot bot = new MeowBot();
+		bot.setVer(version);
 		bot.setNameAgain("MeowBot");
 		bot.lTInit(); //better way of doing this needed *soon*
 		bot.setVerbose(true);
@@ -18,6 +21,7 @@ public class MeowBotMain {
 		bot2.joinChannel("#bmhsprogramming");
 
 		LapFoxBot bot3 = new LapFoxBot();
+		bot3.setVer(version);
 		bot3.setNameAgain("Tweesee");
 		bot3.rssInitAgain();
 		bot3.lTInit();

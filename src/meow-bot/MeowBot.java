@@ -3,10 +3,13 @@ import org.jibble.pircbot.*;
 import java.io.*;
 import java.util.*;
 public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BECAUSE ITS CHANGED
-	public MeowBot(){
-	}
+	String version;
+	public MeowBot(){}
 	public void setNameAgain(String name){
 		this.setName(name);
+	}
+	public void setVer(String ver){
+		this.version = ver;
 	}
 	ArrayList sportPoints = new ArrayList();
 	ArrayList factoids = new ArrayList();
@@ -35,7 +38,7 @@ public class MeowBot extends PircBot{ //WARNING REMOVE THE FILE SPORT.POINTS BEC
     			sendMessage(channel, sender + ": pong");
     		}
     		else if (command.equalsIgnoreCase("version")){
-    			sendMessage(channel, sender + ": MeowBot v2.1 with less bugs and actual features. Coding by GlowKitty");
+    			sendMessage(channel, sender + ": " + this.version);
     		}
     		else if (cmdSplit[0].equalsIgnoreCase("one") && cmdSplit[1].equalsIgnoreCase("sport") && cmdSplit[2].equalsIgnoreCase("point")){
     			sendMessage(channel, sender + ": adding one sport point to " + cmdSplit[3] + "'s score");

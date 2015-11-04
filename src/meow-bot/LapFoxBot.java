@@ -1,5 +1,4 @@
 package org.meowbot;
-import org.jibble.pircbot.*;
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
